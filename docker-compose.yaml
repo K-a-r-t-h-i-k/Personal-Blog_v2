@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  django:
+    build: ./Personal-Blog
+    ports:
+      - "8000:8000"
+    volumes:
+      - .volumes/static:/static
+    env_file:
+      - Personal-Blog/blog.env
+
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - .volumes/default.conf:/etc/nginx/conf.d/default.conf
+      - .volumes/static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - django
