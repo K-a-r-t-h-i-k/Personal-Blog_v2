@@ -3,6 +3,7 @@ version: "3.7"
 services:
   django:
     build: ./Personal-Blog
+    container_name: django
     ports:
       - "8000:8000"
     volumes:
@@ -12,9 +13,9 @@ services:
 
 
   nginx:
-    image: nginx:latest
+    build: ./nginx
+    container_name: nginx
     volumes:
-      - .volumes/default.conf:/etc/nginx/conf.d/default.conf
       - .volumes/static:/static
     ports:
       - "80:80"

@@ -1,11 +1,13 @@
 FROM python:3.8.5-alpine
 RUN pip install --upgrade pip
-
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN apk add --no-cache gcc musl-dev linux-headers
 
 WORKDIR /app
-COPY ./entrypoint.sh /
-ENTRYPOINT [ "sh" , "/entrypoint.sh" ]
+
+COPY . /app
+RUN pip install -r requirements.txt
+
+RUN chmod +x entrypoint.sh
+ENTRYPOINT [ "sh" , "entrypoint.sh" ]
 
 
