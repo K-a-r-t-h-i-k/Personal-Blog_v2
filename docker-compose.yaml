@@ -4,20 +4,43 @@ services:
   django:
     build: ./Personal-Blog
     container_name: django
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
-      - .volumes/static:/static
+      - ./volumes/static:/static
     env_file:
-      - Personal-Blog/blog.env
-
+      - blog.env
+    depends_on:
+      - db
 
   nginx:
     build: ./nginx
     container_name: nginx
     volumes:
-      - .volumes/static:/static
+      - ./volumes/static:/static
     ports:
       - "80:80"
     depends_on:
       - django
+
+  db:
+    image: postgres:15
+    container_name: db
+    volumes:
+      - ./volumes/postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - blog.env
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
