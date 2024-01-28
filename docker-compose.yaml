@@ -20,6 +20,7 @@ services:
       - ./volumes/static:/static
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - django
 
